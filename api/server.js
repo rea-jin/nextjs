@@ -8,4 +8,4 @@ const PORT = 4000;
 // });
 
 // サーバー立ち上げ npm run dev
-app.listen(PORT, () => console.log(`server is runnning on Port ${PORT}`));
+app.listen(PORT, () => console.log(`server is running on Port ${PORT}`));

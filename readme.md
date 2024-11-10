@@ -14,7 +14,9 @@ package.jsonのtestをdevにしてnodemon server.js をメインとする
 express jsをつかう
 npm i express nodemon
 
-
+<!-- prismaでデータを取得するためクライアントライブラリ必要 -->
+npm i @ prisma/client
+importしてインスタンス化して使う
 <br>
 
 ## supabaseをprismaでjsから操作する
@@ -39,3 +41,4 @@ Prismaでマイグレーションを行う場合は、PgBouncer接続ではな�
 
 長時間実行されるトランザクションの途中でのタイムアウト
 DDL（テーブルの追加や変更）操作の不具合
+

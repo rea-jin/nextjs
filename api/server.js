@@ -1,6 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
-const { bcrypt } = require("bcrypt");
-const express = require("express");
+const { PrismaClient } = require("@prisma/client"); // prismaをつかうため
+const bcrypt = require("bcrypt"); // パスワードハッシュのため　　モジュールによって変数かオブジェクトで読み込むかが違う
+
+const express = require("express"); // expressをつかう
 const app = express(); // instance?
 const PORT = 4000;
 
@@ -11,6 +12,9 @@ const PORT = 4000;
 
 // prisma client
 const prisma = new PrismaClient();
+
+// expressでjsonをうけとる
+app.use(express.json());
 
 // 新規ユーザー登録API
 app.post("/api/auth/register", async (req, res) => {

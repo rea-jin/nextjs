@@ -1,5 +1,7 @@
 const { PrismaClient } = require("@prisma/client"); // prismaをつかうため
 const bcrypt = require("bcrypt"); // パスワードハッシュのため　　モジュールによって変数かオブジェクトで読み込むかが違う
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const express = require("express"); // expressをつかう
 const app = express(); // instance?
@@ -35,5 +37,28 @@ app.post("/api/auth/register", async (req, res) => {
   return res.json({ user });
 });
 
+// ユーザーログインAPI
+app.post("/api/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+  // emailはユニークなので
+  const user = prisma.user.findUnique({ where: { email } }); // モデルのデータが取れる
+  // ユーザーがいなければ
+  if (!user) {
+    return res.status(401).json({ error: "パスワードかメルアドが違います:e1" });
+  }
+  // password check
+  const isPasswordValid = await bcrypt.compare(password, user.password); // リクエストとモデルの値を比較
+  if (!isPasswordValid) {
+    return res.status(401).json({ error: "パスワードかメルアドが違います:e2" });
+  }
+  // json web token のライブラリを使う
+  // .envはprocess.envでよびだせる
+  const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+    expiresIn: "id",
+  });
+
+  // tokenだけかえす
+  return res.json({ token });
+});
 // サーバー立ち上げ npm run dev
 app.listen(PORT, () => console.log(`server is running on Port ${PORT}`));

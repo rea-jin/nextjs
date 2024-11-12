@@ -18,6 +18,11 @@ npm i express nodemon
 npm i @ prisma/client
 importしてインスタンス化して使う
 <br>
+json web tokenのライブラリ
+npm i jsonwebtoken
+.envを呼び出すためのライブラリ
+npm i dotenv
+
 
 ## supabaseをprismaでjsから操作する
 

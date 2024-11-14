@@ -1,5 +1,5 @@
 // server.jsではappを使っていたがrouterにする
-const router = require("express").Router;
+const router = require("express").Router(); // 関数
 const { PrismaClient } = require("@prisma/client"); // prismaをつかうため
 const bcrypt = require("bcrypt"); // パスワードハッシュのため　　モジュールによって変数かオブジェクトで読み込むかが違う
 const jwt = require("jsonwebtoken");
@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 // prisma client
 const prisma = new PrismaClient();
 
-// 新規ユーザー登録API
-router.post("/api/auth/register", async (req, res) => {
+// 新規ユーザー登録API urlを変更する
+router.post("/register", async (req, res) => {
   // 分割代入でリクエスト取得
   const { username, email, password } = req.body;
   //   password はハッシュ化
@@ -27,7 +27,7 @@ router.post("/api/auth/register", async (req, res) => {
 });
 
 // ユーザーログインAPI
-router.post("/api/auth/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   // emailはユニークなので
   const user = await prisma.user.findUnique({ where: { email } }); // モデルのデータが取れる

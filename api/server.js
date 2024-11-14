@@ -2,6 +2,7 @@ const express = require("express"); // expressをつかう
 const app = express(); // instance?
 
 const authRoute = require("./routers/auth");
+const postRoute = require("./routers/posts");
 
 // CORSポリシー対策
 const cors = require("cors");
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // apiを呼び出す
 app.use("/api/auth", authRoute); // /registerなどのurlがくる
+app.use("/api/posts", postRoute);
 
 // サーバー立ち上げ npm run dev
 app.listen(PORT, () => console.log(`server is running on Port ${PORT}`));

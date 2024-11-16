@@ -24,6 +24,10 @@ router.post("/post", async (req, res) => {
         content,
         authorId: 1,
       },
+      // リレーションを取得するのにincludeを使う
+      include: {
+        author: true,
+      },
     });
     res.status(200).json(newPost);
   } catch (err) {
@@ -46,29 +50,22 @@ router.post("/post", async (req, res) => {
 });
 
 // 最新取得
-router.post("/new", async (req, res) => {
-  //   const { email, password } = req.body;
-  //   // emailはユニークなので
-  //   const user = await prisma.user.findUnique({ where: { email } }); // モデルのデータが取れる
-  //   // ユーザーがいなければ
-  //   if (!user) {
-  //     return res.status(401).json({ error: "パスワードかメルアドが違います:e1" });
-  //   }
-  //   console.log(user);
-  //   // password check
-  //   const isPasswordValid = await bcrypt.compare(password, user.password); // リクエストとモデルの値を比較
-  //   if (!isPasswordValid) {
-  //     return res.status(401).json({ error: "パスワードかメルアドが違います:e2" });
-  //   }
-  //   console.log(isPasswordValid);
-  //   // json web token のライブラリを使う
-  //   // .envはprocess.envでよびだせる
-  //   // user idをpayloadに入れてるのでJWTのサイトでトークンを貼り付けるとidの値が見れる
-  //   const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-  //     expiresIn: "1d", // 期限：1d or 20h or 60　など
-  //   });
-  //   // tokenだけかえす
-  //   return res.json({ token });
+router.get("/get_latest_post", async (req, res) => {
+  try {
+    const latestPosts = await prisma.post.findMany({
+      take: 10,
+      orderBy: { createdAt: "desc" },
+      // リレーションを取得するのにincludeを使う
+      include: {
+        author: true,
+      },
+    });
+    console.log(latestPosts);
+    return res.json(latestPosts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "サーバーエラーです" });
+  }
 });
 
 // 出力して他で使えるようにする

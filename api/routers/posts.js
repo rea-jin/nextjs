@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 // prisma client
 const prisma = new PrismaClient();
 
-// 投稿
+// 投稿APIのルート
 router.post("/post", async (req, res) => {
   // 分割代入でリクエスト取得
   const { content } = req.body;

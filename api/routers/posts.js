@@ -3,12 +3,13 @@ const router = require("express").Router(); // 関数
 const { PrismaClient } = require("@prisma/client"); // prismaをつかうため
 const bcrypt = require("bcrypt"); // パスワードハッシュのため　　モジュールによって変数かオブジェクトで読み込むかが違う
 const jwt = require("jsonwebtoken");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 // prisma client
 const prisma = new PrismaClient();
 
-// 投稿APIのルート
-router.post("/post", async (req, res) => {
+// 投稿APIのルート next()によって次のミドルウェア(処理)に進む
+router.post("/post", isAuthenticated, async (req, res) => {
   // 分割代入でリクエスト取得
   const { content } = req.body;
 
@@ -22,7 +23,7 @@ router.post("/post", async (req, res) => {
     const newPost = await prisma.post.create({
       data: {
         content,
-        authorId: 1,
+        authorId: req.userId, // isAuthenticatedで追加したuserId
       },
       // リレーションを取得するのにincludeを使う
       include: {

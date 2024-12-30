@@ -27,7 +27,11 @@ router.post("/post", isAuthenticated, async (req, res) => {
       },
       // リレーションを取得するのにincludeを使う
       include: {
-        author: true,
+        author: {
+          include: {
+            profile: true,
+          },
+        },
       },
     });
     res.status(200).json(newPost);
@@ -58,7 +62,11 @@ router.get("/get_latest_post", async (req, res) => {
       orderBy: { createdAt: "desc" },
       // リレーションを取得するのにincludeを使う
       include: {
-        author: true,
+        author: {
+          include: {
+            profile: true,
+          },
+        },
       },
     });
     console.log(latestPosts);

@@ -19,6 +19,8 @@ model User {
   username    String
   password String
   posts   Post[]
+  profile Profile? // ? means it's optional and can be null
+
 }
 
 model Post {
@@ -29,3 +31,10 @@ model Post {
   authorId  Int
 }
 
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  profileImageUrl String?
+  userId Int     @unique
+  user   User    @relation(fields: [userId], references: [id])
+}

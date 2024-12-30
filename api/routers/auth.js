@@ -3,6 +3,7 @@ const router = require("express").Router(); // 関数
 const { PrismaClient } = require("@prisma/client"); // prismaをつかうため
 const bcrypt = require("bcrypt"); // パスワードハッシュのため　　モジュールによって変数かオブジェクトで読み込むかが違う
 const jwt = require("jsonwebtoken");
+const generateIdenticon = require("../utils/generateIdenticon"); // 画像生成のため
 
 // prisma client
 const prisma = new PrismaClient();
@@ -13,13 +14,25 @@ router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
   //   password はハッシュ化
   const hashedPassword = await bcrypt.hash(password, 10);
-
+  // アイコン画像作成
+  const size = 64;
+  console.log(username);
+  const profileImageUrl = generateIdenticon(username, size);
   // modelを使ってdataを挿入
   const user = await prisma.user.create({
     data: {
       username,
       email,
       password: hashedPassword,
+      profile: {
+        create: {
+          bio: "hello, nice to meet you",
+          profileImageUrl: profileImageUrl,
+        },
+      },
+    },
+    include: {
+      profile: true, // profileにもアクセスできる
     },
   });
   // 取得したオブジェクトを返す

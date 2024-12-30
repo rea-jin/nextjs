@@ -14,6 +14,8 @@ function isAuthenticated(req, res, next) {
         message: "トークンが正しくありません",
       });
     }
+
+    console.log(decoded.id);
     req.userId = decoded.id;
     next();
   });

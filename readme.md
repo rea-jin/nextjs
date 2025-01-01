@@ -34,6 +34,11 @@ npx prisma init
 マイグレーション書き方
 https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/using-prisma-migrate-typescript-postgresql
 
+あとからモデルを追加するのは良くないが
+モデルを追加したらマイグレーションをおこおなう
+npx prisma migrate dev
+nameをきかれるがなんでもいい。追加するものとか。
+
 ### 
 Supabaseでは通常、クエリ用とマイグレーション用でポートを変える必要はありません。しかし、接続プーリングツールであるPgBouncerを有効にした場合は、特定の制限が生じるため、状況に応じてポートを変えることが推奨される場合があります。
 
@@ -56,6 +61,11 @@ Prismaでマイグレーションを行う場合は、PgBouncer接続ではな�
 長時間実行されるトランザクションの途中でのタイムアウト
 DDL（テーブルの追加や変更）操作の不具合
 
+### identicon
+アイコンのライブラ入りを使う
+
+SSRかCSRかはプロジェクトによる
+
 ### client側
 srcフォルダはなかったので自分で作成
 
@@ -64,3 +74,12 @@ tailwindはインストールする必要がある
 axiosでapiへ送信する
 npm i axios
 
+### 動的ルーティング
+[]でファイル名を作ることで、かこったIDなどがファイルに渡される。
+これによりパスパラメータのような役割で、ルーティング先がそれぞれ切り替わる。
+
+### deploy
+vercelを使う
+api, clientそれぞれgithubにpushする
+完璧な状態でないとDeployした時にエラーになる
+npm run build流行った状態にする

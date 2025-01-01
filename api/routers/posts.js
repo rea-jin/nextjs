@@ -77,5 +77,28 @@ router.get("/get_latest_post", async (req, res) => {
   }
 });
 
+// ユーザーの投稿取得
+router.get("/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userPosts = await prisma.post.findMany({
+      where: {
+        authorId: parseInt(userId),
+      },
+      orderBy: { createdAt: "desc" },
+      // リレーションを取得するのにincludeを使う
+      include: {
+        author: true,
+      },
+    });
+    console.log(userPosts);
+    return res.status(200).json(userPosts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "サーバーエラーです" });
+  }
+});
+
 // 出力して他で使えるようにする
 module.exports = router; // 上で指定したオブジェクト
